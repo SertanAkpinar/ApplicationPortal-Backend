@@ -41,3 +41,5 @@ const port = 443;
 server.listen(port, () => {
   console.log(`Example app listening at https://localhost:${port}`)
 })
+
+// brew services start mongodb/brew/mongodb-community
