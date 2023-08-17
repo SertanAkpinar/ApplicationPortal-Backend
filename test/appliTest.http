@@ -1,0 +1,52 @@
+// Login mit Basic Authentication mit korrekten 
+// Credentials admin:123
+###
+# @name loginAdminCorrect
+GET https://localhost/api/authenticate
+Authorization: Basic YWRtaW46MTIz
+
+@adminToken = {{loginAdminCorrect.response.headers.Authorization}}
+
+// Lege einen Studiengang an
+###
+# @name createDegreeCourseRequest
+POST https://127.0.0.1/api/degreeCourses
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "universityName": "Beuth Hochschule für Technik Berlin",
+    "universityShortName": "Beuth HS",
+    "departmentName": "Informatik und Medien",
+    "departmentShortName": "FB VI",
+    "name": "Orchideenzucht Bachelor",
+    "shortName": "OZ-BA"
+}
+###
+@degreeCourseID = {{createDegreeCourseRequest.response.body.id}}
+
+// Lege dritten User an
+###
+POST https://localhost/api/users
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "userID": "susi",
+    "firstName": "Susi",
+    "lastName": "Sunkist",
+    "password": "asdf"
+}
+
+// In diesem Fall legt der Administrator für den User susi eine Bewerbung an
+###
+POST https://localhost/api/degreeCourseApplications
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "applicantUserID": "susi",
+    "degreeCourseID": "{{degreeCourseID}}",
+    "targetPeriodYear": 2024,
+    "targetPeriodShortName": "WiSe"
+}

@@ -1,0 +1,44 @@
+// Login mit Basic Authentication mit korrekten 
+// Credentials admin:123
+###
+# @name loginAdminCorrect
+GET https://localhost/api/authenticate
+Authorization: Basic YWRtaW46MTIz
+
+@adminToken = {{loginAdminCorrect.response.headers.Authorization}}
+
+// Lege einen Studiengang an
+###
+# @name createDegreeCourseRequest
+POST https://127.0.0.1/api/degreeCourses
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "universityName": "Beuth Hochschule für Technik Berlin",
+    "universityShortName": "Beuth HS",
+    "departmentName": "Informatik und Medien",
+    "departmentShortName": "FB VI",
+    "name": "Orchideenzucht Bachelor",
+    "shortName": "OZ-BA"
+}
+
+###
+@degreeCourseID = {{createDegreeCourseRequest.response.body.id}}
+
+### Abrufen von dem angelegten Studiengang
+https://localhost/api/degreeCourses/{{degreeCourseID}}
+Authorization: {{adminToken}}
+
+### Ändere den Namen des Studiengangs
+PUT https://localhost/api/degreeCourses/{{degreeCourseID}}
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "Tulpenzucht"
+}
+
+### Löschen des Studiengangs
+DELETE  https://localhost/api/degreeCourses/{{degreeCourseID}}
+Authorization: {{adminToken}}

@@ -1,0 +1,14 @@
+{
+
+    "db": {
+        "dbConfigOptions": {
+            "useNewUrlParser": true,
+            "useUnifiedTopology": true
+        },
+        "connectionString": "mongodb://127.0.0.1:27017"
+    },
+    "session":{
+        "tokenKey": "qr3füo123",
+        "timeout": 12378034534580
+    }
+}
